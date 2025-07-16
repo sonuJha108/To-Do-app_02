@@ -1,0 +1,8 @@
+
+
+
+
+    @app.route('<int:todo_id>',methods = ['GET','POST'])
+    todo = None
+    if todo_id is not None:
+        todo = ToDo.query.get(todo_id)

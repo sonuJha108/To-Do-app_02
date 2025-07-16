@@ -22,7 +22,6 @@ with app.app_context():
 
 
 @app.route('/',methods= ['GET','POST'])
-@app.route('<int:todo_id>',methods = ['GET','POST'])
 def home(todo_id = None):
     if request.method == 'POST':
         title = request.form.get('title')
@@ -32,14 +31,15 @@ def home(todo_id = None):
         db.session.add(todo)
         db.session.commit()
 
-    todo = None
-    if todo_id is not None:
-        todo = ToDo.query.get(todo_id)
-
     todos = ToDo.query.order_by(ToDo.id.desc()).all()
-    
+
     return render_template('home.html',todos = todos)
 
+
+@app.route('/todo/<int:todo_id>', methods=['GET'])
+def get_todo(todo_id):
+    todo = ToDo.query.get_or_404(todo_id)
+    return render_template('todo.html', todo=todo)
 
 
 if __name__ == '__main__':
